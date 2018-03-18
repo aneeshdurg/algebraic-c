@@ -1,22 +1,30 @@
 #include <assert.h>
+#include <stdio.h>
 #include "algebraic.h"
 
-newAlgebraic(Tree,
-    NewType(Branch);
-    NewType(Leaf);
+NewAlgebraic2(Meme, Text, 
+    char *text;
+    int likes
+  , Image, 
+    char *name;
+    char *url;
+    int likes;
+  );
 
-    struct TreeT *l, *r;
+NewAlgebraic2(Tree, Branch, 
+    struct TreeT *l;
+    struct TreeT *r;
     int val;
-);
+  , Leaf,  int val;);
 
 int tree_sum(TreeT root){
-  int sum = root.val;
-  $(Leaf, root, return sum);
+  $(Leaf, root, return getLeaf(root).val);
   $(_   , root, { 
-      if(root.l)
-        sum += tree_sum(*root.l);
-      if(root.r)
-        sum += tree_sum(*root.r);
+      int sum = getBranch(root).val;
+      if(getBranch(root).l)
+        sum += tree_sum(*getBranch(root).l);
+      if(getBranch(root).r)
+        sum += tree_sum(*getBranch(root).r);
       return sum;
   });
 }
@@ -27,13 +35,14 @@ int main(){
   setType(Leaf, b);
   setType(Leaf, c);
 
-  a.val = 1;
-  a.l = &b;
-  a.r = &c;
-  b.val = 2;
-  c.val = 3;
+  a.data.Branch.val = 1;
+  a.data.Branch.l = &b;
+  a.data.Branch.r = &c;
+  b.data.Leaf.val = 2;
+  c.data.Leaf.val = 3;
 
   int sum = tree_sum(a);
+  printf("Sum: %d\n", sum);
   assert(sum == 6);
 }
 
