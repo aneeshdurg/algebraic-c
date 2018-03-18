@@ -1,34 +1,33 @@
 #include <string.h>
-#define FOR_EACH0(t, x)
-#define FOR_EACH1(t, a, ...) t(a) 
-#define FOR_EACH2(t, a, ...) t(a) FOR_EACH1(t, __VA_ARGS__)
-#define FOR_EACH3(t, a, ...) t(a) FOR_EACH2(t, __VA_ARGS__)
-#define FOR_EACH4(t, a, ...) t(a) FOR_EACH3(t, __VA_ARGS__)
-#define FOR_EACH5(t, a, ...) t(a) FOR_EACH4(t, __VA_ARGS__)
-#define FOR_EACH6(t, a, ...) t(a) FOR_EACH5(t, __VA_ARGS__)
 
-#define FOR_EACH_2_0(t, a, x)
-#define FOR_EACH_2_3(t, a, b, ...) t(a, b) 
-#define FOR_EACH_2_4(t, a, b, ...) t(a, b) FOR_EACH_2_3(t, __VA_ARGS__)
-#define FOR_EACH_2_5(t, a, b, ...) t(a, b) FOR_EACH_2_4(t, __VA_ARGS__)
-#define FOR_EACH_2_6(t, a, b, ...) t(a, b) FOR_EACH_2_5(t, __VA_ARGS__)
+%{
+for i in range(100):
+  if i == 0:
+    #define FOR_EACH0(...)
+  else:
+    #define FOR_EACH%{i}%(t, a, ...) t(a) FOR_EACH%{i-1}%(t, __VA_ARGS__)
 
-#define P1_FOR_EACH0(t, a, x)
-#define P1_FOR_EACH1(t, a, b, ...) t(a, b) 
-#define P1_FOR_EACH2(t, a, b, ...) t(a, b) P1_FOR_EACH1(t, a, __VA_ARGS__)
-#define P1_FOR_EACH3(t, a, b, ...) t(a, b) P1_FOR_EACH2(t, a, __VA_ARGS__)
-#define P1_FOR_EACH4(t, a, b, ...) t(a, b) P1_FOR_EACH3(t, a, __VA_ARGS__)
-#define P1_FOR_EACH5(t, a, b, ...) t(a, b) P1_FOR_EACH4(t, a, __VA_ARGS__)
-#define P1_FOR_EACH6(t, a, b, ...) t(a, b) P1_FOR_EACH5(t, a, __VA_ARGS__)
+for i in range(2, 100):
+  if i == 2:
+    #define FOR_EACH_2_0(...)
+    #define P1_FOR_EACH_2_0(...)
+  elif i == 3:
+    #define FOR_EACH_2_3(t, a, b, ...) t(a, b)
+    #define P1_FOR_EACH_2_3(t, a, b, c, ...) t(a, b, c) 
+  else:
+    #define FOR_EACH_2_%{i}%(t, a, b, ...) t(a, b) FOR_EACH_2_%{i-1}%(t, __VA_ARGS__)
+    #define P1_FOR_EACH_2_%{i}%(t, a, b, c, ...) t(a, b, c) P1_FOR_EACH_2_%{i-1}%(t, a, __VA_ARGS__)
 
-#define P1_FOR_EACH_2_0(t, a, x)
-#define P1_FOR_EACH_2_3(t, a, b, c, ...) t(a, b, c) 
-#define P1_FOR_EACH_2_4(t, a, b, c, ...) t(a, b, c) P1_FOR_EACH_2_3(t, a, __VA_ARGS__)
-#define P1_FOR_EACH_2_5(t, a, b, c, ...) t(a, b, c) P1_FOR_EACH_2_4(t, a, __VA_ARGS__)
-#define P1_FOR_EACH_2_6(t, a, b, c, ...) t(a, b, c) P1_FOR_EACH_2_5(t, a, __VA_ARGS__)
+for i in range(100):
+  if i == 0:
+    #define P1_FOR_EACH0(...)
+  else:
+    #define P1_FOR_EACH%{i}%(t, a, b, ...) t(a, b) P1_FOR_EACH%{i-1}%(t, a, __VA_ARGS__)
 
-#define NUM_ARGS_H1(x, x6, x5, x4, x3, x2, x1, x0, ...) x0 
-#define NUM_ARGS(...) NUM_ARGS_H1(dummy, ##__VA_ARGS__, 6, 5, 4, 3, 2, 1, 0)
+#define NUM_ARGS_H1(x, %{','.join(['x'+str(100-i-1) for i in range(100)])}%, ...) x0 
+#define NUM_ARGS(...) NUM_ARGS_H1(dummy, ##__VA_ARGS__, %{','.join([str(100-i-1) for i in range(100)])}%)
+}%
+
 #define APPLY_ALL_H3(t, n, ...) FOR_EACH##n(t, __VA_ARGS__)
 #define APPLY_ALL_H2(t, n, ...) APPLY_ALL_H3(t, n, __VA_ARGS__)
 #define APPLY_ALL(t, ...) APPLY_ALL_H2(t, NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
