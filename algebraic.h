@@ -1,8 +1,8 @@
 #include <string.h>
-#define newAlgebraic(type, body)                                               \
+#define newAlgebraic(type, ...)                                                \
   typedef struct type##T {                                                     \
     unsigned int is_ : 1;                                                      \
-    body                                                                       \
+    __VA_ARGS__                                                                \
   } type##T;
 
 #define NewType(name) unsigned int is##name : 1;
@@ -12,13 +12,13 @@
 
 #define setType(type, name) memset(&name, 0, sizeof(name));name.is##type = 1;
 
-#define $(typea, a, expr)                                                      \
+#define $(typea, a, ...)                                                       \
   if ('_' == #typea[0]) {                                                      \
-    expr;                                                                      \
+    __VA_ARGS__;                                                               \
   } else {                                                                     \
     if (a.is##typea) {                                                         \
-      expr;                                                                    \
+      __VA_ARGS__;                                                             \
     }                                                                          \
   }
 
-#define casefn(typea, a, typeb, b, expr) $(typea, a, $(typeb, b, expr));
+#define casefn(typea, a, typeb, b, ...) $(typea, a, $(typeb, b, __VA_ARGS__));

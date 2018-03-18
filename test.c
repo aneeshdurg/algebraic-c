@@ -5,8 +5,7 @@ newAlgebraic(Tree,
     NewType(Branch);
     NewType(Leaf);
 
-    struct TreeT *l;
-    struct TreeT *r;
+    struct TreeT *l, *r;
     int val;
 );
 
