@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import re
 from sys import argv
+from os import system
 
 def output(o, string):
     o.write(string)
@@ -56,6 +57,10 @@ def main():
                 buff.append(l)
             else:
                 o.write(l)
+    f.close()
+    o.close()
+    system("clang-format algebraic.h > algebraic.clean.h")
+    system("mv algebraic.clean.h algebraic.h")
 
 if __name__ == "__main__":
     main()

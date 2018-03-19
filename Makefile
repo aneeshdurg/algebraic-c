@@ -1,6 +1,6 @@
 all: test
 
-test: algebraic.h
+test: algebraic.h test.c
 	gcc test.c -o test
 
 algebraic.h: algebraic.pyp.h
