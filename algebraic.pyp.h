@@ -11,12 +11,13 @@ for i in range(2, 100):
   if i == 2:
     #define FOR_EACH_2_0(...)
     #define P1_FOR_EACH_2_0(...)
-  elif i == 3:
-    #define FOR_EACH_2_3(t, a, b, ...) t(a, b)
-    #define P1_FOR_EACH_2_3(t, a, b, c, ...) t(a, b, c) 
+    #define FOR_EACH_2_1(...)
+    #define P1_FOR_EACH_2_1(...)
+    #define FOR_EACH_2_2(t, a, b, ...) t(a, b)
+    #define P1_FOR_EACH_2_2(t, a, b, c, ...) t(a, b, c) 
   else:
-    #define FOR_EACH_2_%{i}%(t, a, b, ...) t(a, b) FOR_EACH_2_%{i-1}%(t, __VA_ARGS__)
-    #define P1_FOR_EACH_2_%{i}%(t, a, b, c, ...) t(a, b, c) P1_FOR_EACH_2_%{i-1}%(t, a, __VA_ARGS__)
+    #define FOR_EACH_2_%{i}%(t, a, b, ...) t(a, b) FOR_EACH_2_%{i-2}%(t, __VA_ARGS__)
+    #define P1_FOR_EACH_2_%{i}%(t, a, b, c, ...) t(a, b, c) P1_FOR_EACH_2_%{i-2}%(t, a, __VA_ARGS__)
 
 for i in range(100):
   if i == 0:
@@ -89,7 +90,7 @@ for prefix in ['', 'P1_']:
     printf("%s ", #type);
 
 #define setType(type, name)                                                    \
-  memset(&name, 1, sizeof(name));                                              \
+  memset(&name, 0, sizeof(name));                                              \
   name.is##type = 1;
 
 #define $(typea, a, ...)                                                       \
