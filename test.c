@@ -35,11 +35,11 @@ int main(){
   setType(Leaf, b);
   setType(Leaf, c);
 
-  a.data.Branch.val = 1;
-  a.data.Branch.l = &b;
-  a.data.Branch.r = &c;
-  b.data.Leaf.val = 2;
-  c.data.Leaf.val = 3;
+  a.Branch.val = 1;
+  a.Branch.l = &b;
+  a.Branch.r = &c;
+  b.Leaf.val = 2;
+  c.Leaf.val = 3;
 
   int sum = tree_sum(a);
   printf("Sum: %d\n", sum);

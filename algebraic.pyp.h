@@ -60,9 +60,9 @@ for i in range(100):
   unsigned int is##name : 1;                                                   
 
 #define DeclareData(type, ...)                                                 \
-  union type##Data{                                                            \
+  union{                                                                       \
     __VA_ARGS__                                                                \
-  } data;
+  };
 
 #define DeclareData_(x)                                                        \
   struct x##_data x; 
@@ -70,7 +70,7 @@ for i in range(100):
   DeclareData_(x)
 
 #define DeclareGetters(type, x)                                                \
-  static inline struct x##_data get##x(type##T e){ return e.data.x; }
+  static inline struct x##_data get##x(type##T e){ return e.x; }
 #define DeclareGetters_(type, x, y)                                            \
   DeclareGetters(type, x)
 
