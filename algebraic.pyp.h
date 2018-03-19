@@ -51,11 +51,13 @@ for i in range(100):
   } type##T;
 
 #define NewTypeD(name, ...)                                                    \
-  unsigned int is##name : 1;                                                   \
-  struct name##_data {__VA_ARGS__};
+  struct name##_data {__VA_ARGS__;};
 
 #define NewType(name)                                                          \
-  NewTypeD(name)
+  unsigned int is##name : 1;                                                   
+
+#define NewType_(name, x)                                                      \
+  unsigned int is##name : 1;                                                   
 
 #define DeclareData(type, ...)                                                 \
   union type##Data{                                                            \
@@ -73,12 +75,14 @@ for i in range(100):
   DeclareGetters(type, x)
 
 #define NewAlgebraic(type, ...)                                                \
+  APPLY_ALL(NewTypeD, __VA_ARGS__);                                          \
   newAlgebraic(type, APPLY_ALL(NewType, __VA_ARGS__)                           \
       DeclareData(type, APPLY_ALL(DeclareData_, __VA_ARGS__)));                \
       P1_APPLY_ALL(DeclareGetters, type, __VA_ARGS__); 
 
 #define NewAlgebraic2(type, ...)                                               \
-  newAlgebraic(type, APPLY_ALL_2(NewTypeD, __VA_ARGS__)                        \
+  APPLY_ALL_2(NewTypeD, __VA_ARGS__);                                          \
+  newAlgebraic(type, APPLY_ALL_2(NewType_, __VA_ARGS__)                         \
     DeclareData(type, APPLY_ALL_2(DeclareData__, __VA_ARGS__)));               \
   P1_APPLY_ALL_2(DeclareGetters_, type, __VA_ARGS__); 
 
