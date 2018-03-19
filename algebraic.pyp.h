@@ -28,21 +28,19 @@ for i in range(100):
 #define NUM_ARGS(...) NUM_ARGS_H1(dummy, ##__VA_ARGS__, %{','.join([str(100-i-1) for i in range(100)])}%)
 }%
 
-#define APPLY_ALL_H3(t, n, ...) FOR_EACH##n(t, __VA_ARGS__)
-#define APPLY_ALL_H2(t, n, ...) APPLY_ALL_H3(t, n, __VA_ARGS__)
-#define APPLY_ALL(t, ...) APPLY_ALL_H2(t, NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
-
-#define APPLY_ALL_2_H3(t, n, ...) FOR_EACH_2_##n(t, __VA_ARGS__)
-#define APPLY_ALL_2_H2(t, n, ...) APPLY_ALL_2_H3(t, n, __VA_ARGS__)
-#define APPLY_ALL_2(t, ...) APPLY_ALL_2_H2(t, NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
-
-#define P1_APPLY_ALL_H3(t, a, n, ...) P1_FOR_EACH##n(t, a, __VA_ARGS__)
-#define P1_APPLY_ALL_H2(t, a, n, ...) P1_APPLY_ALL_H3(t, a, n, __VA_ARGS__)
-#define P1_APPLY_ALL(t, a, ...) P1_APPLY_ALL_H2(t, a, NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
-
-#define P1_APPLY_ALL_2_H3(t, a, n, ...) P1_FOR_EACH_2_##n(t, a, __VA_ARGS__)
-#define P1_APPLY_ALL_2_H2(t, a, n, ...) P1_APPLY_ALL_2_H3(t, a, n, __VA_ARGS__)
-#define P1_APPLY_ALL_2(t, a, ...) P1_APPLY_ALL_2_H2(t, a, NUM_ARGS(__VA_ARGS__), __VA_ARGS__)
+%{
+for prefix in ['', 'P1_']:
+  for suffix in ['', '_2']:
+    suffix2 = suffix
+    if suffix == '_2':
+      suffix2 += '_'
+    preargs = ''
+    if(prefix == 'P1_'):
+      preargs = 'a,'
+    #define %{prefix}%APPLY_ALL%{suffix}%_H3(t,%{preargs}% n, ...) %{prefix}%FOR_EACH%{suffix2}%##n(t,%{preargs}% __VA_ARGS__)
+    #define %{prefix}%APPLY_ALL%{suffix}%_H2(t,%{preargs}% n, ...) %{prefix}%APPLY_ALL%{suffix}%_H3(t,%{preargs}% n, __VA_ARGS__)
+    #define %{prefix}%APPLY_ALL%{suffix}%(t,%{preargs}%...) %{prefix}%APPLY_ALL%{suffix}%_H2(t,%{preargs}% NUM_ARGS(__VA_ARGS__), __VA_ARGS__)      
+}%
 
 #define newAlgebraic(type, ...)                                                \
   typedef struct type##T {                                                     \
