@@ -49,7 +49,7 @@ for prefix in ['', 'P1_']:
   } type##T;
 
 #define NewTypeD(name, ...)                                                    \
-  struct name##_data {__VA_ARGS__;};
+  typedef struct name##_data {__VA_ARGS__;} name;
 
 #define NewType(name)                                                          \
   unsigned int is##name : 1;                                                   
@@ -68,7 +68,7 @@ for prefix in ['', 'P1_']:
   DeclareData_(x)
 
 #define DeclareGetters(type, x)                                                \
-  static inline struct x##_data get##x(type##T e){ return e.x; }
+  static inline struct x##_data* get##x(type##T *e){ return &(e->x); }
 #define DeclareGetters_(type, x, y)                                            \
   DeclareGetters(type, x)
 

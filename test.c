@@ -20,13 +20,14 @@ NewAlgebraic2(
 );
 
 int tree_sum(TreeT root){
-  $(Leaf, root, return getLeaf(root).val);
+  $(Leaf, root, return getLeaf(&root)->val);
   $(_   , root, { 
-      int sum = getBranch(root).val;
-      if(getBranch(root).l)
-        sum += tree_sum(*getBranch(root).l);
-      if(getBranch(root).r)
-        sum += tree_sum(*getBranch(root).r);
+      Branch curr = *getBranch(&root);
+      int sum = curr.val;
+      if(curr.l)
+        sum += tree_sum(*curr.l);
+      if(curr.r)
+        sum += tree_sum(*curr.r);
       return sum;
   });
 }
