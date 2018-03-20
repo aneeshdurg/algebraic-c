@@ -121,8 +121,10 @@ for prefix in ['', 'P1_']:
   mkprintfnHeader(type, __VA_ARGS__)
 
 #define setType(type, name)                                                    \
-  memset(&name, 0, sizeof(name));                                              \
-  name.is##type = 1;
+  do{                                                                          \
+    memset(&name, 0, sizeof(name));                                            \
+    name.is##type = 1;                                                         \
+  }while(0)
 
 #define $(typea, a, ...)                                                       \
   if ('_' == #typea[0]) {                                                      \
