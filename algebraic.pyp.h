@@ -92,17 +92,18 @@ for prefix in ['', 'P1_']:
 #define _printstmt(x) else __PRINT_GEN(x, a)
 #define _printstmt_(x, y) _printstmt(x)
 #define mkprintfn(type, ...)                                                   \
- void print##type(type##T a) {                                                 \
+ void print##type##T(type##T a) {                                              \
     if(0) {}                                                                   \
     APPLY_ALL(_printstmt, __VA_ARGS__)                                         \
   } 
 #define mkprintfn2(type, ...)                                                  \
- void print##type(type##T a) {                                                 \
+ void print##type##T(type##T a) {                                              \
     if(0) {}                                                                   \
     APPLY_ALL_2(_printstmt_, __VA_ARGS__)                                      \
   } 
 #define printableType2(type, ...)                                              \
-  NewAlgebraic2(type, __VA_ARGS__);                                            
+  NewAlgebraic2(type, __VA_ARGS__);                                            \
+  mkprintfn2(type, __VA_ARGS__)
 
 #define printableType(type, ...)                                               \
   NewAlgebraic(type, __VA_ARGS__);                                             \
