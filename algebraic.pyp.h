@@ -101,13 +101,24 @@ for prefix in ['', 'P1_']:
     if(0) {}                                                                   \
     APPLY_ALL_2(_printstmt_, __VA_ARGS__)                                      \
   } 
+
+#define mkprintfnHeader(type) void print##type##T(type##T a);
+
 #define printableType2(type, ...)                                              \
   NewAlgebraic2(type, __VA_ARGS__);                                            \
   mkprintfn2(type, __VA_ARGS__)
 
+#define printableType2Header(type, ...)                                        \
+  NewAlgebraic2(type, __VA_ARGS__);                                            \
+  mkprintfnHeader(type)
+
 #define printableType(type, ...)                                               \
   NewAlgebraic(type, __VA_ARGS__);                                             \
   mkprintfn(type, __VA_ARGS__)
+
+#define printableTypeHeader(type, ...)                                         \
+  NewAlgebraic(type, __VA_ARGS__);                                             \
+  mkprintfnHeader(type, __VA_ARGS__)
 
 #define setType(type, name)                                                    \
   memset(&name, 0, sizeof(name));                                              \
