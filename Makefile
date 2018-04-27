@@ -9,4 +9,4 @@ macro_iter.h: macro_iter.pyp.h
 	./py_processor.py macro_iter.pyp.h 
 
 clean:
-	rm macro_iter.h test
+	rm -f macro_iter.h test
